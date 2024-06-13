@@ -30,13 +30,15 @@ async function getAllTasks(req, res) {
 
 // Create a new task
 const createTask = (req, res) => {
-  const { title, description ,completed } = req.body;
-  const newId = tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1;
-  const newTask = new Task(newId.toString(), title, description, completed);
-  tasks.push(newTask);
-  saveTasks();
-  res.json(newTask);
-};
+    const { title, description, completed } = req.body;
+    const newId = (tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) + 1 : 1).toString();
+    const newTask = new Task(newId, title, description, completed);
+    tasks.push(newTask);
+    saveTasks();
+    res.json(newTask);
+  };
+  
+  
 
 
 // Update a task by ID
