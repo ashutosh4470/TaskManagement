@@ -2,9 +2,10 @@ import React from 'react'
 
 const Index = () => {
   return (
-    <div>Index</div>
+    <div>
+        
+    </div>
   )
-  k
 }
 
 export default Index
