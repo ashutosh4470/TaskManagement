@@ -1,33 +1,9 @@
 [
   {
-    "id": "1",
-    "title": "Task 2",
-    "description": "Desc for Task 1",
-    "completed": false
-  },
-  {
-    "id": "3",
-    "title": "Task 3",
-    "description": "Description for Task 3",
-    "completed": false
-  },
-  {
-    "id": "4",
-    "title": "Task 4",
-    "description": "Description for Task 4",
-    "completed": true
-  },
-  {
     "id": "5",
     "title": "Task 5",
     "description": "Description for Task 5",
     "completed": false
-  },
-  {
-    "id": "6",
-    "title": "Task 6",
-    "description": "Description for Task 6",
-    "completed": true
   },
   {
     "id": "7",
@@ -49,20 +25,14 @@
   },
   {
     "id": "10",
-    "title": "Task 10",
-    "description": "Description for Task 10",
-    "completed": true
+    "title": "zdf",
+    "description": "asdfsd",
+    "completed": false
   },
   {
     "id": "11",
-    "title": "Task 11",
-    "description": "Description for Task 11",
-    "completed": false
-  },
-  {
-    "id": "12",
-    "title": "Task 12",
-    "description": "Description for Task 11",
-    "completed": false
+    "title": "oks",
+    "description": "pk",
+    "completed": true
   }
 ]
