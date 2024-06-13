@@ -1,71 +1,81 @@
-// src/controllers/taskController.js
-
-const fs = require('fs');
-const Task = require('../models/Task');
+const fs = require("fs");
+const path = require("path");
+const Task = require("../models/Task");
 
 let tasks = [];
 
 // Load tasks from tasks.json if it exists
 function loadTasks(callback) {
-    fs.readFile('tasks.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading tasks.json:', err);
-            return;
-        }
-        tasks = JSON.parse(data);
-        callback();
-    });
+  const filePath = path.join(__dirname, "../../tasks.json");
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading tasks.json:", err);
+      return;
+    }
+    tasks = JSON.parse(data);
+    callback();
+  });
 }
 
 // Get all tasks
-const getAllTasks = async () => {
-    return tasks;
-};
+async function getAllTasks(req, res) {
+    try {
+    //   console.log("Tasks:", tasks);
+      res.json(tasks);
+    } catch (error) {
+      console.log("Error:", error);
+      res.status(500).json({ message: error.message });
+    }
+}
 
 // Create a new task
 const createTask = (req, res) => {
-    const { title, description } = req.body;
-    const newTask = new Task(Date.now().toString(), title, description);
-    tasks.push(newTask);
-    saveTasks();
-    res.json(newTask);
+  const { title, description ,completed } = req.body;
+  const newId = tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1;
+  const newTask = new Task(newId.toString(), title, description, completed);
+  tasks.push(newTask);
+  saveTasks();
+  res.json(newTask);
 };
+
 
 // Update a task by ID
 const updateTask = (req, res) => {
-    const taskId = req.params.id;
-    const { title, description } = req.body;
-    const index = tasks.findIndex(task => task.id === taskId);
-    if (index !== -1) {
-        tasks[index].title = title;
-        tasks[index].description = description;
-        saveTasks();
-        res.json(tasks[index]);
-    } else {
-        res.status(404).json({ message: 'Task not found' });
-    }
+  const taskId = req.params.id;
+  const { title, description, completed } = req.body;
+  const index = tasks.findIndex((task) => task.id === taskId);
+  if (index !== -1) {
+    tasks[index].title = title;
+    tasks[index].description = description;
+    tasks[index].completed = completed;
+    saveTasks();
+    res.json(tasks[index]);
+  } else {
+    res.status(404).json({ message: "Task not found" });
+  }
 };
 
 // Delete a task by ID
 const deleteTask = (req, res) => {
-    const taskId = req.params.id;
-    tasks = tasks.filter(task => task.id !== taskId);
-    saveTasks();
-    res.json({ message: 'Task deleted' });
+  const taskId = req.params.id;
+  tasks = tasks.filter((task) => task.id !== taskId);
+  saveTasks();
+  res.json({ message: "Task deleted" });
 };
 
 function saveTasks() {
-    fs.writeFileSync('tasks.json', JSON.stringify(tasks, null, 2), 'utf8');
+  const filePath = path.join(__dirname, "../../tasks.json");
+  fs.writeFileSync(filePath, JSON.stringify(tasks, null, 2), "utf8");
 }
 
-// Load tasks before starting the server
+// Load tasks before exporting other functions
 loadTasks(() => {
-    console.log("Tasks loaded:", tasks);
+//   console.log("Tasks loaded:", tasks);
 });
 
 module.exports = {
-    getAllTasks,
-    createTask,
-    updateTask,
-    deleteTask
+  getAllTasks,
+  createTask,
+  updateTask,
+  deleteTask,
 };
