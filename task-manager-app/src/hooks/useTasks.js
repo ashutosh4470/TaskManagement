@@ -20,7 +20,7 @@ const useTasks = () => {
   const addTask = async (newTask) => {
     try {
       const createdTask = await taskService.createTask(newTask);
-      setTasks([...tasks, createdTask]);
+      setTasks(prevTasks => [...prevTasks, createdTask]); // Update state using the previous state
     } catch (error) {
       console.error('Error creating task:', error.message);
     }
@@ -29,13 +29,24 @@ const useTasks = () => {
   const deleteTask = async (id) => {
     try {
       await taskService.deleteTask(id);
-      setTasks(tasks.filter(task => task.id !== id));
+      setTasks(prevTasks => prevTasks.filter(task => task.id !== id)); // Update state using the previous state
     } catch (error) {
       console.error('Error deleting task:', error.message);
     }
   };
 
-  return { tasks, addTask, deleteTask };
+  const updateTask = async (updatedTask) => {
+    try {
+      const task = await taskService.updateTask(updatedTask);
+      setTasks(prevTasks =>
+        prevTasks.map(t => (t.id === task.id ? task : t))
+      ); 
+    } catch (error) {
+      console.error('Error updating task:', error.message);
+    }
+  };
+
+  return { tasks, addTask, deleteTask, updateTask };
 };
 
 export default useTasks;
