@@ -21,7 +21,9 @@ function loadTasks(callback) {
 async function getAllTasks(req, res) {
     try {
     //   console.log("Tasks:", tasks);
-      res.json(tasks);
+      res.json(tasks.map((id,data)=>{
+        data.title;
+      }));
     } catch (error) {
       console.log("Error:", error);
       res.status(500).json({ message: error.message });
@@ -29,7 +31,7 @@ async function getAllTasks(req, res) {
 }
 
 // Create a new task
-const createTask = (req, res) => {
+const createTask =async (req, res) => {
     const { title, description, completed } = req.body;
     const newId = (tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) + 1 : 1).toString();
     const newTask = new Task(newId, title, description, completed);
